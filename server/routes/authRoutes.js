@@ -15,7 +15,14 @@ import { register, login, logout } from "../controllers/authControllers.js";
 /** use validation for routes that require input from users */
 router.post("/register", registerValidation, register);
 /** authenticate using passport.authenticate() and specifying the strategy (local) */
-router.post("/login", loginValidation, passport.authenticate("local"), login);
+router.post(
+  "/login",
+  loginValidation,
+  passport.authenticate("local", {
+    failureMessage: true,
+  }),
+  login
+);
 router.get("/logout", logout);
 
 export default router;
