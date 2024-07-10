@@ -60,6 +60,41 @@ const Wrapper = styled.div`
       background-color: #d5e5ff;
       border-radius: 10px;
       margin: 1rem;
+      display: grid;
+      /** divide the div into 2 columns and 2 rows with the second row taking up both columns */
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 5fr;
+      grid-template-areas: "upcoming recent" "content content";
+
+      .link-upcoming {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button-upcoming {
+          color: #2d63ff;
+          background-color: #c7ddff;
+          width: 19.5vw;
+        }
+        .button-upcoming:focus {
+          background-color: white;
+        }
+      }
+
+      .link-recent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button-recent {
+          color: #2d63ff;
+          background-color: #c7ddff;
+          width: 19.5vw;
+        }
+        .button-recent:focus {
+          background-color: white;
+        }
+      }
     }
     .info {
       height: 45%;
@@ -98,6 +133,11 @@ const Wrapper = styled.div`
         gap: 1rem;
         color: white;
         padding: 1.5rem;
+
+        h3 {
+          font-size: 32px;
+          margin-bottom: 2rem;
+        }
       }
       .info-bottom {
         grid-area: info-bottom;
@@ -127,25 +167,50 @@ const Wrapper = styled.div`
       align-items: center;
 
       .bottom-appstore {
-        background-color: red;
+        /* background-color: red; */
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+        display: flex;
+
+        .button-appstore {
+          object-fit: cover;
+          max-width: 8rem;
+          justify-self: center;
+          position: relative;
+          transform: translateY(-10px);
+          /* transform: translateX(10px); */
+        }
       }
       .bottom-googleplay {
-        background-color: red;
+        /* background-color: red; */
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+        display: flex;
+
+        .button-googleplay {
+          object-fit: cover;
+          max-width: 8rem;
+          justify-self: center;
+          position: relative;
+        }
       }
       .bottom-fdroid {
-        background-color: red;
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+
+        .button-fdroid {
+          object-fit: cover;
+          max-width: 8rem;
+          justify-self: center;
+          position: relative;
+          transform: translateY(-25px);
+        }
       }
     }
 
@@ -156,11 +221,12 @@ const Wrapper = styled.div`
       align-items: center;
 
       .bottom-second-slack {
-        background-color: red;
+        background-color: gray;
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+        padding: 10px;
       }
     }
 
@@ -169,6 +235,22 @@ const Wrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .img-facebook {
+        height: 2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
+      .img-twitter {
+        height: 2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
+      .img-instagram {
+        height: 2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
     }
 
     .bottom-fourth {

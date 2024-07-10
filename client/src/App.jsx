@@ -7,10 +7,13 @@ import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/authPages/Login";
 import Register from "./pages/authPages/Register";
 import Index from "./pages/Index";
+import DashboardLayout from "./pages/DashboardLayout";
+import UpcomingMeetings from "./pages/meetingPages/UpcomingMeetings";
+import RecentMeetings from "./pages/meetingPages/RecentMeetings";
 
 /** action function imports */
-import { action as loginAction } from "./pages/authPages/Login.jsx";
-import { action as registerAction } from "./pages/authPages/Register.jsx";
+import { action as loginAction } from "./pages/authPages/Login";
+import { action as registerAction } from "./pages/authPages/Register";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,20 @@ const router = createBrowserRouter([
         path: "register",
         element: <Register />,
         action: registerAction,
+      },
+      {
+        path: "dashboard",
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "upcomingMeetings",
+            element: <UpcomingMeetings />,
+          },
+          {
+            path: "recentMeetings",
+            element: <RecentMeetings />,
+          },
+        ],
       },
     ],
   },
