@@ -55,15 +55,19 @@ const Wrapper = styled.div`
     gap: 1rem;
 
     .meeting {
-      height: 55%;
+      height: 50%;
       width: 40%;
       background-color: #d5e5ff;
       border-radius: 10px;
       margin: 1rem;
       display: grid;
+      /* padding: 0 */
       /** divide the div into 2 columns and 2 rows with the second row taking up both columns */
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 5fr;
+      /** name the areas starting with the first row divided into 2 cols
+      * then the second row taking up both the columns
+      */
       grid-template-areas: "upcoming recent" "content content";
 
       .link-upcoming {
@@ -95,9 +99,19 @@ const Wrapper = styled.div`
           background-color: white;
         }
       }
+
+      /** Sets the meeting content to occupy
+      * the whole row that was set in .meeting
+      */
+      .meeting-content {
+        grid-area: content;
+        overflow-y: scroll;
+        max-height: 20rem;
+        margin: 0;
+      }
     }
     .info {
-      height: 45%;
+      height: 50%;
       width: 40%;
       background-color: #444447;
       border-radius: 10px;

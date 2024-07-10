@@ -1,6 +1,7 @@
 /** Importing styled components */
 import { Button } from "@material-tailwind/react";
 import { Link, Outlet } from "react-router-dom";
+// import { IoCalendarOutline } from "react-icons/io5";
 
 function Meeting() {
   return (
@@ -18,6 +19,9 @@ function Meeting() {
           </Link>
         </div>
         <div className='meeting-content'>
+          {/** renders the child components
+           * of DashboardLayout (RecentMeetings, UpcomingMeetings)
+           */}
           <Outlet />
         </div>
       </div>
