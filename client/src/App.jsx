@@ -10,52 +10,60 @@ import Index from "./pages/Index";
 import DashboardLayout from "./pages/DashboardLayout";
 import UpcomingMeetings from "./pages/meetingPages/UpcomingMeetings";
 import RecentMeetings from "./pages/meetingPages/RecentMeetings";
+import RoomPage from "./pages/RoomPage";
+
+/** component that contains context imports to pass web socket connection to all components */
+import RoomProvider from "./context/RoomSocketContext";
 
 /** action function imports */
 import { action as loginAction } from "./pages/authPages/Login";
 import { action as registerAction } from "./pages/authPages/Register";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomeLayout />,
-    errorElement: <ErrorPage />,
-    /** path of children components will be related to the path  of the parent */
-    /** children components will be rendered using <Outlet/> */
-    children: [
-      {
-        index: true,
-        element: <Index />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-        action: loginAction,
-      },
-      {
-        path: "register",
-        element: <Register />,
-        action: registerAction,
-      },
-      {
-        path: "dashboard",
-        element: <DashboardLayout />,
-        children: [
-          {
-            path: "upcomingMeetings",
-            element: <UpcomingMeetings />,
-          },
-          {
-            path: "recentMeetings",
-            element: <RecentMeetings />,
-          },
-        ],
-      },
-    ],
-  },
-]);
-
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <HomeLayout />,
+      errorElement: <ErrorPage />,
+      /** path of children components will be related to the path  of the parent */
+      /** children components will be rendered using <Outlet/> */
+      children: [
+        {
+          index: true,
+          element: <Index />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+          action: loginAction,
+        },
+        {
+          path: "register",
+          element: <Register />,
+          action: registerAction,
+        },
+        {
+          path: "roomPage/:id",
+          element: <RoomPage />,
+        },
+        {
+          path: "dashboard",
+          element: <DashboardLayout />,
+          children: [
+            {
+              path: "upcomingMeetings",
+              element: <UpcomingMeetings />,
+            },
+            {
+              path: "recentMeetings",
+              element: <RecentMeetings />,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+
   return (
     <RouterProvider router={router} future={{ v7_startTransition: true }} />
   );

@@ -34,4 +34,24 @@ export const meetingData = [
     date: "July 10, 2024",
     time: "10:01",
   },
+  {
+    meetingName: "this is my meeting",
+    date: "July 10, 2024",
+    time: "10:01",
+  },
+  {
+    meetingName: "this is my meeting",
+    date: "July 10, 2024",
+    time: "10:01",
+  },
+  {
+    meetingName: "this is my meeting",
+    date: "July 10, 2024",
+    time: "10:01",
+  },
+  {
+    meetingName: "this is my meeting",
+    date: "July 10, 2024",
+    time: "10:01",
+  },
 ];
