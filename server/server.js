@@ -12,13 +12,67 @@ import MongoStore from "connect-mongo"; /** package to use as store in the sessi
 /** Importing UserModel to implement passport */
 import { UserModel } from "./models/UserModel.js";
 import passport from "passport";
-// import localStrategy from "passport-local";
+
+/** uuid library to give video rooms a unique id */
+import { v4 as uuidv4 } from "uuid";
+
 dotenv.config();
 
+/** importing socket.io */
+import { Server } from "socket.io";
+import http from "http";
+
 const app = express();
-app.use(cors());
+app.use(cors()); /** allows communication between the client and the server */
 app.use(express.json()); /** parse json data */
 app.use(bodyParser.json());
+
+/** Setting up the server */
+/**creates an HTTP server. accepts an argument that is the express app */
+/** Handles all incoming http requests */
+const server = http.createServer(app);
+
+/** Initialize a new instance of socket.io server */
+const io = new Server(server, {
+  cors: {
+    origin: "*" /** allows requests from any origin */,
+    methods: ["GET", "POST", "PUT", "DELETE"] /** allowed http methods */,
+  },
+});
+
+/** Socket connections */
+/**This listens for a new client connection.
+ * When a client connects to the server, the provided callback function is executed.
+ * */
+/**@socket - individual socket connection for the client. enables communication with connected clients*/
+/**@socket - same connection used in the event listener when a client disconnects*/
+
+io.on("connection", (socket) => {
+  console.log("user is connected");
+
+  /** listener for create-room emit */
+  socket.on("create-room", () => {
+    console.log("user created the room");
+    const roomId = uuidv4(); /** creates a unique roomId */
+    socket.join(roomId); /**joins a user in the created unique room */
+    /** sends a message back to user */
+    /**@emit message will be listened to in RoomSocketContext*/
+    socket.emit("room created", {
+      roomId,
+    });
+  });
+
+  /** Listener for join-room emit */
+  /** will accept the parameter roomId */
+  socket.on("join-room", ({ roomId }) => {
+    console.log("user joined the room", roomId);
+    socket.join(roomId); /** using the id to join */
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User is disconnected");
+  });
+});
 
 /** connection to database */
 main().catch((err) => console.log(err));
@@ -96,6 +150,7 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message: message });
 });
 
-app.listen(process.env.PORT, () => {
+/** Starts the http server */
+server.listen(process.env.PORT, () => {
   console.log(`LISTENING TO SERVER ${process.env.PORT}`);
 });

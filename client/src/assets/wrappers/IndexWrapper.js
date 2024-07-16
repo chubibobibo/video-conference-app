@@ -55,14 +55,63 @@ const Wrapper = styled.div`
     gap: 1rem;
 
     .meeting {
-      height: 55%;
+      height: 50%;
       width: 40%;
       background-color: #d5e5ff;
       border-radius: 10px;
       margin: 1rem;
+      display: grid;
+      /* padding: 0 */
+      /** divide the div into 2 columns and 2 rows with the second row taking up both columns */
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 5fr;
+      /** name the areas starting with the first row divided into 2 cols
+      * then the second row taking up both the columns
+      */
+      grid-template-areas: "upcoming recent" "content content";
+
+      .link-upcoming {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button-upcoming {
+          color: #2d63ff;
+          background-color: #c7ddff;
+          width: 19.5vw;
+        }
+        .button-upcoming:focus {
+          background-color: white;
+        }
+      }
+
+      .link-recent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button-recent {
+          color: #2d63ff;
+          background-color: #c7ddff;
+          width: 19.5vw;
+        }
+        .button-recent:focus {
+          background-color: white;
+        }
+      }
+
+      /** Sets the meeting content to occupy
+      * the whole row that was set in .meeting
+      */
+      .meeting-content {
+        grid-area: content;
+        overflow-y: scroll;
+        max-height: 20rem;
+        margin: 0;
+      }
     }
     .info {
-      height: 45%;
+      height: 50%;
       width: 40%;
       background-color: #444447;
       border-radius: 10px;
@@ -98,6 +147,11 @@ const Wrapper = styled.div`
         gap: 1rem;
         color: white;
         padding: 1.5rem;
+
+        h3 {
+          font-size: 32px;
+          margin-bottom: 2rem;
+        }
       }
       .info-bottom {
         grid-area: info-bottom;
@@ -127,25 +181,50 @@ const Wrapper = styled.div`
       align-items: center;
 
       .bottom-appstore {
-        background-color: red;
+        /* background-color: red; */
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+        display: flex;
+
+        .button-appstore {
+          object-fit: cover;
+          max-width: 8rem;
+          justify-self: center;
+          position: relative;
+          transform: translateY(-10px);
+          /* transform: translateX(10px); */
+        }
       }
       .bottom-googleplay {
-        background-color: red;
+        /* background-color: red; */
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+        display: flex;
+
+        .button-googleplay {
+          object-fit: cover;
+          max-width: 8rem;
+          justify-self: center;
+          position: relative;
+        }
       }
       .bottom-fdroid {
-        background-color: red;
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+
+        .button-fdroid {
+          object-fit: cover;
+          max-width: 8rem;
+          justify-self: center;
+          position: relative;
+          transform: translateY(-25px);
+        }
       }
     }
 
@@ -156,11 +235,12 @@ const Wrapper = styled.div`
       align-items: center;
 
       .bottom-second-slack {
-        background-color: red;
+        background-color: gray;
         width: 8rem;
         height: 3rem;
         margin: 1rem;
         border-radius: 5px;
+        padding: 10px;
       }
     }
 
@@ -169,6 +249,22 @@ const Wrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .img-facebook {
+        height: 2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
+      .img-twitter {
+        height: 2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
+      .img-instagram {
+        height: 2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
     }
 
     .bottom-fourth {
