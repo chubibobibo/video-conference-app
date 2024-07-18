@@ -44,15 +44,27 @@ function App() {
         },
         {
           path: "roomPage/:id",
-          element: <RoomPage />,
+          element: (
+            <RoomProvider>
+              <RoomPage />
+            </RoomProvider>
+          ),
         },
         {
           path: "dashboard",
-          element: <DashboardLayout />,
+          element: (
+            <RoomProvider>
+              <DashboardLayout />
+            </RoomProvider>
+          ),
           children: [
             {
               path: "upcomingMeetings",
-              element: <UpcomingMeetings />,
+              element: (
+                <RoomProvider>
+                  <UpcomingMeetings />
+                </RoomProvider>
+              ),
             },
             {
               path: "recentMeetings",

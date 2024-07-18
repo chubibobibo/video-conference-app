@@ -1,22 +1,12 @@
 import TextInput from "../inputFields/TextInput.jsx";
 import { Button } from "@material-tailwind/react";
-import { Link, Outlet } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
 /** importing the RoomContext */
 import { RoomSocketContext } from "../../context/RoomSocketContext.jsx";
 
-/** @enterRoom  function passed from DashboardLayout that accepts a roomId argument and use it to navigate to a page*/
-function Header({ enterRoom }) {
+function Header() {
   const { ws } = useContext(RoomSocketContext);
-  // console.log(ws);
-
-  /** initialize web socket connection */
-  /** @ws listens to an emitted message ("room created " from server.js upon creation of a room (create-room) event ) */
-  /** then executes the function createRoom that logs the roomId */
-  useEffect(() => {
-    ws.on("room created", enterRoom);
-  }, []);
 
   /** function that will emit a message to the socket server to join a room */
   /** @joinRoom will be used as an onClick event */
