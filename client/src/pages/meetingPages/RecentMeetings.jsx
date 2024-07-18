@@ -8,9 +8,9 @@ import { meetingData } from "../../utils/meetingData.js";
 function RecentMeetings() {
   return (
     <Wrapper>
-      {meetingData.map((newData) => {
+      {meetingData.map((newData, idx) => {
         return (
-          <div className='meeting-element-container'>
+          <div className='meeting-element-container' key={idx}>
             <div className='meeting-date'>{newData.date}</div>
             <div className='meeting-name'>{newData.meetingName}</div>
             <div className='meeting-time'>{newData.time}</div>
