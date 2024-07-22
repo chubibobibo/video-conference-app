@@ -29,6 +29,10 @@ export const roomHandler = (socket) => {
         { new: true }
       );
       socket.join(roomId); /** using the id to join  */
+
+      /** sends "user-joined" to every participants of the room */
+      /**@peerId object is needed in the "user-joined" listener to call to a specific user */
+      socket.to(roomId).emit("user-joined", { peerId });
       /** emit get-users containing the roomId and the participants which is an array of all the id's */
       socket.emit("get-users", {
         roomId,
