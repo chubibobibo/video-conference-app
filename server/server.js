@@ -5,6 +5,9 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 /** Importing routes */
 import authRoutes from "./routes/authRoutes.js";
+import roomRoutes from "./routes/roomRoutes.js";
+
+import { roomHandler } from "./socket/roomHandler.js";
 
 import session from "express-session"; /** package to create session for user auth */
 import MongoStore from "connect-mongo"; /** package to use as store in the session */
@@ -12,9 +15,6 @@ import MongoStore from "connect-mongo"; /** package to use as store in the sessi
 /** Importing UserModel to implement passport */
 import { UserModel } from "./models/UserModel.js";
 import passport from "passport";
-
-/** uuid library to give video rooms a unique id */
-import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
@@ -46,29 +46,10 @@ const io = new Server(server, {
  * */
 /**@socket - individual socket connection for the client. enables communication with connected clients*/
 /**@socket - same connection used in the event listener when a client disconnects*/
-
+/**@roomHandler - socket connections for creating, joining rooms */
 io.on("connection", (socket) => {
   console.log("user is connected");
-
-  /** listener for create-room emit */
-  socket.on("create-room", () => {
-    console.log("user created the room");
-    const roomId = uuidv4(); /** creates a unique roomId */
-    socket.join(roomId); /**joins a user in the created unique room */
-    /** sends a message back to user */
-    /**@emit message will be listened to in RoomSocketContext*/
-    socket.emit("room created", {
-      roomId,
-    });
-  });
-
-  /** Listener for join-room emit */
-  /** will accept the parameter roomId */
-  socket.on("join-room", ({ roomId }) => {
-    console.log("user joined the room", roomId);
-    socket.join(roomId); /** using the id to join */
-  });
-
+  roomHandler(socket);
   socket.on("disconnect", () => {
     console.log("User is disconnected");
   });
@@ -136,6 +117,7 @@ passport.deserializeUser(UserModel.deserializeUser());
 
 /** routes */
 app.use("/api/auth/", authRoutes);
+app.use("/api/room/", roomRoutes);
 
 /** error middleware for page not found */
 app.use("*", (req, res) => {
