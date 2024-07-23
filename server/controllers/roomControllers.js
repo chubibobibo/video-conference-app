@@ -14,9 +14,12 @@ export const addRoom = async (req, res) => {
   res.status(200).json({ message: `${newRoom.roomName} created` });
 };
 
+/** Note: used findOne to query the database for the roomId instead of
+ * searching by id because id in the params is the emitted roomId.
+ */
 export const findRoom = async (req, res) => {
   const { id } = req.params;
-  const foundRoom = await RoomModel.findById(id);
+  const foundRoom = await RoomModel.findOne({ roomId: id });
   if (!foundRoom) {
     throw new ExpressError("No room found", 400);
   }
