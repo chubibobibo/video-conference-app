@@ -1,6 +1,7 @@
 /** Importing styled components */
 import TextInputField from "../../assets/wrappers/TextInputWrapper.js";
-function TextInput({ type, name, placeholder }) {
+
+function TextInput({ type, name, placeholder, value, onChange, handleSubmit }) {
   /** Using the context imported from Login.jsx*/
 
   return (
@@ -9,7 +10,9 @@ function TextInput({ type, name, placeholder }) {
         type={type}
         name={name}
         placeholder={placeholder}
-        required
+        value={value}
+        onChange={onChange}
+        onSubmit={handleSubmit}
       />
     </div>
   );
