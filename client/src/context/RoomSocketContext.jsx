@@ -41,6 +41,16 @@ export const RoomProvider = ({ children }) => {
     navigate(`/roomPage/${roomId}`);
   };
 
+  /** @peerjoinRoom function to let peer join room of host */
+  /** @roomId from foundRoom is used to navigate to a specific room */
+  /** navigating to specific room because it emits a message to join a user that is listened by the roomHandler. */
+  const peerJoinRoom = ({ foundRoom }) => {
+    // console.log(foundRoom);
+    navigate(`/roomPage/${foundRoom.roomId}`);
+  };
+
+  // const newPeerJoin = ({})
+
   /** remove the video stream of a user once tab is closed */
   const removePeer = (peerId) => {
     dispatch(removePeerAction(peerId));
@@ -73,6 +83,7 @@ export const RoomProvider = ({ children }) => {
     ws.on("get-users", (participants) => {
       console.log(participants);
     });
+    ws.on("peer-joined-room", peerJoinRoom);
     /** @removePeer function that uses dispatch to remove a user using it's peerID */
     ws.on("user-disconnected", removePeer);
   }, []);
@@ -91,7 +102,7 @@ export const RoomProvider = ({ children }) => {
     ws.on("user-joined", ({ peerId }) => {
       const call = me.call(peerId, stream);
       call.on("stream", (stream) => {
-        console.log(stream);
+        // console.log(stream);
         /**@dispatch accepts the action that will be used for the reducer function */
         /** contains the action type and the action payload */
         dispatch(addPeerAction(peerId, stream));
@@ -107,7 +118,7 @@ export const RoomProvider = ({ children }) => {
       });
     });
   }, [me, stream]);
-  console.log({ peers });
+  // console.log({ peers });
 
   return (
     <RoomSocketContext.Provider value={{ ws, me, stream, peers }}>

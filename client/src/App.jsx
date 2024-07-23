@@ -18,6 +18,7 @@ import RoomProvider from "./context/RoomSocketContext";
 /** action function imports */
 import { action as loginAction } from "./pages/authPages/Login";
 import { action as registerAction } from "./pages/authPages/Register";
+import { loader as roomLoader } from "./pages/RoomPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -49,6 +50,7 @@ function App() {
               <RoomPage />
             </RoomProvider>
           ),
+          loader: roomLoader,
         },
         {
           path: "dashboard",
