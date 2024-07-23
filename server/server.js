@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 /** Importing routes */
 import authRoutes from "./routes/authRoutes.js";
+import roomRoutes from "./routes/roomRoutes.js";
 
 import { roomHandler } from "./socket/roomHandler.js";
 
@@ -116,6 +117,7 @@ passport.deserializeUser(UserModel.deserializeUser());
 
 /** routes */
 app.use("/api/auth/", authRoutes);
+app.use("/api/room/", roomRoutes);
 
 /** error middleware for page not found */
 app.use("*", (req, res) => {

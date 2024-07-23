@@ -7,6 +7,9 @@ const RoomSchema = new Schema(
     roomId: {
       type: String,
     },
+    roomName: {
+      type: String,
+    },
     // host: {
     //   type: String,
     //   required: true,
@@ -20,9 +23,6 @@ const RoomSchema = new Schema(
     participants: {
       type: Array,
     },
-    // currentParticipants: {
-    //   type: Array,
-    // },
   },
   { timestamps: true }
 );
