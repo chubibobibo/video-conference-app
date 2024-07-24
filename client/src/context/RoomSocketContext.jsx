@@ -49,8 +49,6 @@ export const RoomProvider = ({ children }) => {
     navigate(`/roomPage/${foundRoom.roomId}`);
   };
 
-  // const newPeerJoin = ({})
-
   /** remove the video stream of a user once tab is closed */
   const removePeer = (peerId) => {
     dispatch(removePeerAction(peerId));
@@ -70,7 +68,7 @@ export const RoomProvider = ({ children }) => {
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: false })
         .then((response) => {
-          // console.log(response);
+          console.log(response);
           setStream(response);
           // console.log(stream);
         });
@@ -102,7 +100,7 @@ export const RoomProvider = ({ children }) => {
     ws.on("user-joined", ({ peerId }) => {
       const call = me.call(peerId, stream);
       call.on("stream", (stream) => {
-        // console.log(stream);
+        console.log(stream);
         /**@dispatch accepts the action that will be used for the reducer function */
         /** contains the action type and the action payload */
         dispatch(addPeerAction(peerId, stream));
@@ -118,7 +116,7 @@ export const RoomProvider = ({ children }) => {
       });
     });
   }, [me, stream]);
-  // console.log({ peers });
+  console.log({ peers });
 
   return (
     <RoomSocketContext.Provider value={{ ws, me, stream, peers }}>

@@ -31,7 +31,7 @@ function RoomPage() {
 
   /** @data will be passed in the emit for accessing the room data in roomHandler */
   const data = useLoaderData();
-  console.log(data);
+  // console.log(data);
 
   const { ws, me, stream, peers } = useContext(RoomSocketContext);
   // console.log(stream?.id);
@@ -44,29 +44,35 @@ function RoomPage() {
     ws.emit("join-room", {
       roomId: id,
       peerId: me?._id,
-      roomName: data?.data?.foundRoom?.roomName,
+      roomName: data?.roomData?.data?.foundRoom?.roomName,
     });
   }, [id, me, ws]);
 
   return (
-    <>
-      <div>Room {id}</div>
-      <br />
-      <div>Room {data?.roomData?.data?.foundRoom?.roomName}</div>
-      <Wrapper>
-        <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username} ${stream?.id}`}</p>
-        <VideoPlayer stream={stream} />
+    <Wrapper>
+      <div className='header'>
+        <h1>Room Id: {id}</h1>
+        <h1>Room name: {data?.roomData?.data?.foundRoom?.roomName}</h1>
+      </div>
+      <div className='content'>
+        <div className='content-header'>
+          <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
+          <p>{`Stream Id: ${stream?.id}`}</p>
+          <VideoPlayer stream={stream} />
+        </div>
         {Object.values(peers).map((newPeers, idx) => {
           console.log(newPeers);
           return (
             <div key={idx}>
-              <p>{`peer stream: ${newPeers?.stream?.id}`}</p>
-              <VideoPlayer stream={newPeers.stream} />
+              <div className='content-contents'>
+                <p>{`Peer Stream Id: ${newPeers?.stream?.id}`}</p>
+              </div>
+              <VideoPlayer stream={newPeers?.stream} />
             </div>
           );
         })}
-      </Wrapper>
-    </>
+      </div>
+    </Wrapper>
   );
 }
 export default RoomPage;

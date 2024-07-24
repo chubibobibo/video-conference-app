@@ -33,7 +33,7 @@ export const roomHandler = (socket) => {
       const foundRoom = await RoomModel.findOneAndUpdate(
         { roomName: roomName },
         { $push: { participants: peerId } },
-        { new: true }
+        { new: true, safe: true, multi: false }
       );
       socket.join(roomId); /** using the id to join  */
 
