@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 10rem;
 
   .login-container {
     width: 30rem;
@@ -17,9 +18,19 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    flex-direction: column;
   }
   h1 {
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 45px;
+    margin-top: -10rem;
+    margin-bottom: 5rem;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 `;
 

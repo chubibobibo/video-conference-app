@@ -1,8 +1,9 @@
 /** obtain the params in the URL */
-import { useParams, useLoaderData } from "react-router-dom";
+import { useParams, useLoaderData, redirect } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { RoomSocketContext } from "../context/RoomSocketContext";
 import VideoPlayer from "../components/VideoPlayer";
+import { toast } from "react-toastify";
 
 import axios from "axios";
 
@@ -14,11 +15,13 @@ import Wrapper from "../assets/wrappers/RoomPage";
 export const loader = async ({ params }) => {
   try {
     const roomData = await axios.get(`/api/room/findRoom/${params.id}`);
+    const loggedUserData = await axios.get("/api/auth/loggedUser");
     // console.log(roomData);
-    return roomData;
+    return { roomData, loggedUserData };
   } catch (err) {
     console.log(err);
-    return null;
+    toast.error(err?.response?.data?.message);
+    return redirect("/login");
   }
 };
 
@@ -28,7 +31,7 @@ function RoomPage() {
 
   /** @data will be passed in the emit for accessing the room data in roomHandler */
   const data = useLoaderData();
-  // console.log(data.data.foundRoom.roomName);
+  console.log(data);
 
   const { ws, me, stream, peers } = useContext(RoomSocketContext);
   // console.log(stream?.id);
@@ -49,9 +52,9 @@ function RoomPage() {
     <>
       <div>Room {id}</div>
       <br />
-      <div>Room {data?.data?.foundRoom?.roomName}</div>
+      <div>Room {data?.roomData?.data?.foundRoom?.roomName}</div>
       <Wrapper>
-        <p>{`user 1 stream: ${stream?.id}`}</p>
+        <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username} ${stream?.id}`}</p>
         <VideoPlayer stream={stream} />
         {Object.values(peers).map((newPeers, idx) => {
           console.log(newPeers);

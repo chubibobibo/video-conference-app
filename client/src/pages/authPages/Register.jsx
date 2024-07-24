@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
   try {
     await axios.post("/api/auth/register", data);
     toast.success("Registered a new user");
-    return redirect("/");
+    return redirect("/dashboard/upcomingMeetings");
   } catch (err) {
     toast.error(
       isArray(err?.response?.data?.message)
@@ -25,32 +25,45 @@ export const action = async ({ request }) => {
 function Register() {
   return (
     <Wrapper>
-      <h1>Register</h1>
       <div className='register-container'>
-        <Form method='post'>
-          <TextInput type={"text"} name={"username"} placeholder={"Username"} />
-          <TextInput type={"email"} name={"email"} placeholder={"Email"} />
+        <h1>Register</h1>
+        <Form method='post' className='form-container'>
+          <TextInput
+            type={"text"}
+            name={"username"}
+            placeholder={"Username"}
+            required={"required"}
+          />
+          <TextInput
+            type={"email"}
+            name={"email"}
+            placeholder={"Email"}
+            required={"required"}
+          />
           <TextInput
             type={"text"}
             name={"firstName"}
             placeholder={"First name"}
+            required={"required"}
           />
           <TextInput
             type={"text"}
             name={"lastName"}
             placeholder={"Last name"}
+            required={"required"}
           />
           <TextInput
             type={"password"}
             name={"password"}
             placeholder={"Password"}
+            required={"required"}
           />
           <SubmitButton type={"submit"} label={"register"} />
         </Form>
+        <p>
+          Have an account <Link to='/login'>Login</Link>
+        </p>
       </div>
-      <p>
-        Have an account <Link to='/login'>Login</Link>
-      </p>
     </Wrapper>
   );
 }
