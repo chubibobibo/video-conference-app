@@ -1,4 +1,4 @@
-import { ExpressError } from "../ExpressError/ExpressError";
+import { ExpressError } from "../ExpressError/ExpressError.js";
 
 /** using passportJs isAuthenticated() method to verify if user is logged in */
 export const isLoggedIn = (req, res, next) => {

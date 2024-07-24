@@ -18,6 +18,9 @@ import {
   logout,
 } from "../controllers/authControllers.js";
 
+/** authentication */
+import { isLoggedIn } from "../middleware/isLoggedIn.js";
+
 const apiLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, //15 mins
   limit: 3,
@@ -39,7 +42,7 @@ router.post(
   }),
   login
 );
-router.get("/loggedUser", currentLoggedUser);
+router.get("/loggedUser", isLoggedIn, currentLoggedUser);
 router.get("/logout", logout);
 
 export default router;

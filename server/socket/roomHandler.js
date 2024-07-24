@@ -4,27 +4,34 @@ import { v4 as uuidv4 } from "uuid";
 
 export const roomHandler = (socket) => {
   /** listener for create-room emit */
-  socket.on("create-room", async () => {
+  socket.on("create-room", async (roomText) => {
+    // console.log(roomText);
     console.log("user created the room");
     const roomId = uuidv4(); /** creates a unique roomId */
     // socket.join(roomId); /**joins a user in the created unique room */
     /** save the roomId in the database */
-    await RoomModel.create({ roomId: roomId });
+    await RoomModel.create({ roomId: roomId, roomName: roomText });
     /** sends a message back to user */
     /**@emit message will be listened to in RoomSocketContext*/
     socket.emit("room created", { roomId });
   });
 
-  /** Listener for join-room emit */
+  /** listener for peer-join-room */
+  socket.on("peer-join-room", async (roomText) => {
+    const foundRoom = await RoomModel.findOne({ roomName: roomText });
+    socket.emit("peer-joined-room", { foundRoom });
+  });
+
+  /** Listener for join-room emit from RoomPage */
   /** will accept the parameter roomId from the RoomPage component*/
-  socket.on("join-room", async ({ roomId, peerId }) => {
-    console.log("user joined the room", roomId, peerId);
+  socket.on("join-room", async ({ roomId, peerId, roomName }) => {
+    console.log("user joined the room", roomId, peerId, roomName);
     /** Check if a room exist then push the peerId into participants property in RoomModel */
-    const room = await RoomModel.findOne({ roomId: roomId });
+    const room = await RoomModel.findOne({ roomName: roomName });
     if (room) {
       /** access the database using the roomId and push the peerId into the array of participants */
       const foundRoom = await RoomModel.findOneAndUpdate(
-        { roomId: roomId },
+        { roomName: roomName },
         { $push: { participants: peerId } },
         { new: true }
       );
