@@ -31,7 +31,7 @@ function RoomPage() {
 
   /** @data will be passed in the emit for accessing the room data in roomHandler */
   const data = useLoaderData();
-  console.log(data);
+  // console.log(data);
 
   const { ws, me, stream, peers } = useContext(RoomSocketContext);
   // console.log(stream?.id);
@@ -49,12 +49,14 @@ function RoomPage() {
   }, [id, me, ws]);
 
   return (
-    <>
-      <div>Room {id}</div>
-      <br />
-      <div>Room {data?.roomData?.data?.foundRoom?.roomName}</div>
-      <Wrapper>
-        <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username} ${stream?.id}`}</p>
+    <Wrapper>
+      <div className='header'>
+        <h1>Room Id: {id}</h1>
+        <h1>Room name: {data?.roomData?.data?.foundRoom?.roomName}</h1>
+      </div>
+      <div className='content'>
+        <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
+        <p>{`User Id: ${stream?.id}`}</p>
         <VideoPlayer stream={stream} />
         {Object.values(peers).map((newPeers, idx) => {
           console.log(newPeers);
@@ -65,8 +67,8 @@ function RoomPage() {
             </div>
           );
         })}
-      </Wrapper>
-    </>
+      </div>
+    </Wrapper>
   );
 }
 export default RoomPage;
