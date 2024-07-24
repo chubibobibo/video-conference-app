@@ -1,8 +1,8 @@
 import TextInput from "../inputFields/TextInput.jsx";
 import { Button } from "@material-tailwind/react";
 import { useContext, useState } from "react";
-import { Form } from "react-router-dom";
-// import axios from "axios";
+import { Form, redirect, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 /** importing the RoomContext */
 import { RoomSocketContext } from "../../context/RoomSocketContext.jsx";
@@ -12,6 +12,7 @@ function Header() {
   const { ws } = useContext(RoomSocketContext);
   /** stores text data of textfield */
   const [roomText, setRoomText] = useState("");
+  const navigate = useNavigate();
 
   /** sets the state with the input values in textfield  */
   const handleChange = (e) => {
@@ -32,9 +33,19 @@ function Header() {
     ws.emit("peer-join-room", roomText);
   };
 
+  const logout = async () => {
+    try {
+      await axios.get("/api/auth/logout");
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <div className='top-bar'>
+        <button onClick={logout}>logout</button>
         <h2>Jitsi Meet</h2>
         <p> Secured high quality video conference</p>
         {/** container for input text and button to start conference */}
