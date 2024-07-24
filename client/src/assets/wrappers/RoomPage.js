@@ -20,9 +20,17 @@ const Wrapper = styled.div`
 
   .content {
     grid-area: content;
+    display: flex;
+    justify-content: center;
 
     p {
       font-size: 20px;
+    }
+
+    .content-header {
+    }
+
+    .content-contents {
     }
   }
 `;

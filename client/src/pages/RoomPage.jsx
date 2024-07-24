@@ -44,7 +44,7 @@ function RoomPage() {
     ws.emit("join-room", {
       roomId: id,
       peerId: me?._id,
-      roomName: data?.data?.foundRoom?.roomName,
+      roomName: data?.roomData?.data?.foundRoom?.roomName,
     });
   }, [id, me, ws]);
 
@@ -55,15 +55,19 @@ function RoomPage() {
         <h1>Room name: {data?.roomData?.data?.foundRoom?.roomName}</h1>
       </div>
       <div className='content'>
-        <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
-        <p>{`User Id: ${stream?.id}`}</p>
-        <VideoPlayer stream={stream} />
+        <div className='content-header'>
+          <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
+          <p>{`Stream Id: ${stream?.id}`}</p>
+          <VideoPlayer stream={stream} />
+        </div>
         {Object.values(peers).map((newPeers, idx) => {
           console.log(newPeers);
           return (
             <div key={idx}>
-              <p>{`peer stream: ${newPeers?.stream?.id}`}</p>
-              <VideoPlayer stream={newPeers.stream} />
+              <div className='content-contents'>
+                <p>{`Peer Stream Id: ${newPeers?.stream?.id}`}</p>
+              </div>
+              <VideoPlayer stream={newPeers?.stream} />
             </div>
           );
         })}

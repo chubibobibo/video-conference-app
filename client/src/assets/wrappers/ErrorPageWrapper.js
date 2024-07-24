@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  .error-conteiner {
+  .error-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
