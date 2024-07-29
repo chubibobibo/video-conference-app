@@ -56,7 +56,7 @@ function RoomPage() {
       </div>
       <div className='content'>
         <div className='content-header'>
-          <p>{`User: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
+          <p>{`Host stream: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
           <p>{`Stream Id: ${stream?.id}`}</p>
           <VideoPlayer stream={stream} />
         </div>
@@ -65,6 +65,7 @@ function RoomPage() {
           return (
             <div key={idx}>
               <div className='content-contents'>
+                <p>{`Peer Stream : ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
                 <p>{`Peer Stream Id: ${newPeers?.stream?.id}`}</p>
               </div>
               <VideoPlayer stream={newPeers?.stream} />

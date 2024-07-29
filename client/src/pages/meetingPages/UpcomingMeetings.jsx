@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { BsCalendar3 } from "react-icons/bs";
 import { CiCalendar } from "react-icons/ci";
 
+import "add-to-calendar-button";
+import { AddToCalendarButton } from "add-to-calendar-button-react";
+
 function UpcomingMeetings() {
   return (
     <Wrapper>
@@ -19,7 +22,9 @@ function UpcomingMeetings() {
       </div>
       <div className='calendar-link'>
         <CiCalendar size={25} color={"white"} />
-        <Link to='/dashboard/calendar'>Connect to your calendar</Link>
+        <Link to='https://calendar.google.com/calendar/u/0/r'>
+          Connect to your calendar
+        </Link>
       </div>
     </Wrapper>
   );

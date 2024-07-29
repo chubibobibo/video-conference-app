@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@material-tailwind/react": "^2.1.9",
+    "add-to-calendar-button-react": "^2.6.18",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
     "peerjs": "^1.5.4",
