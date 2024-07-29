@@ -22,10 +22,20 @@ dotenv.config();
 import { Server } from "socket.io";
 import http from "http";
 
+/**serving the public folder for deploying */
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 app.use(cors()); /** allows communication between the client and the server */
 app.use(express.json()); /** parse json data */
 app.use(bodyParser.json());
+
+/** serve public folder */
+app.use(express.static(path.resolve(__dirname, "./public")));
 
 /** Setting up the server */
 /**creates an HTTP server. accepts an argument that is the express app */
@@ -119,6 +129,10 @@ passport.deserializeUser(UserModel.deserializeUser());
 app.use("/api/auth/", authRoutes);
 app.use("/api/room/", roomRoutes);
 
+/** get route to access the index.html in public folder */
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./public", "index.html"));
+});
 /** error middleware for page not found */
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Page not found" });
