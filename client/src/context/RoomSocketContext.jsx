@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Peer } from "peerjs";
 import { useState } from "react";
 
+import axios from "axios";
+
 /** Web socket server will be used to connect client to server upon mounting */
 const WS = "http://localhost:3001";
 
@@ -58,32 +60,39 @@ export const RoomProvider = ({ children }) => {
   /** @ws listens to an emitted message ("room created " from server.js upon creation of a room (create-room) event ) */
   /** then executes the function createRoom that logs the roomId */
   useEffect(() => {
-    const meId = uuidv4();
-    const peerId = new Peer(meId); /** creates a new peer */
-    setMe(peerId);
-    /** implement getUserMedia to obtain video */
-    /** @stream response from promise that we use to set the stream state */
-    /** NOTE: page should be served securely over https for GUM to work */
-    try {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: false })
-        .then((response) => {
-          console.log(response);
-          setStream(response);
-          // console.log(stream);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    const getUser = async () => {
+      const currentLoggedUser = await axios.get("/api/auth/loggedUser");
+      console.log(currentLoggedUser);
 
-    /** Listens for emits from roomHandler in the server. */
-    ws.on("room created", enterRoom);
-    ws.on("get-users", (participants) => {
-      console.log(participants);
-    });
-    ws.on("peer-joined-room", peerJoinRoom);
-    /** @removePeer function that uses dispatch to remove a user using it's peerID */
-    ws.on("user-disconnected", removePeer);
+      // const meId = uuidv4();
+      const meId = currentLoggedUser?.data?.loggedUser?._id;
+      const peerId = new Peer(meId); /** creates a new peer */
+      setMe(peerId);
+      /** implement getUserMedia to obtain video */
+      /** @stream response from promise that we use to set the stream state */
+      /** NOTE: page should be served securely over https for GUM to work */
+      try {
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: false })
+          .then((response) => {
+            console.log(response);
+            setStream(response);
+            // console.log(stream);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+
+      /** Listens for emits from roomHandler in the server. */
+      ws.on("room created", enterRoom);
+      ws.on("get-users", (participants) => {
+        console.log(participants);
+      });
+      ws.on("peer-joined-room", peerJoinRoom);
+      /** @removePeer function that uses dispatch to remove a user using it's peerID */
+      ws.on("user-disconnected", removePeer);
+    };
+    getUser();
   }, []);
 
   /** useEffect that will handle creating and answering of calls */

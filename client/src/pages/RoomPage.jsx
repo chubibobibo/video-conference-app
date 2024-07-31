@@ -1,6 +1,6 @@
 /** obtain the params in the URL */
 import { useParams, useLoaderData, redirect } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { RoomSocketContext } from "../context/RoomSocketContext";
 import VideoPlayer from "../components/VideoPlayer";
 import { toast } from "react-toastify";
@@ -34,7 +34,9 @@ function RoomPage() {
   // console.log(data);
 
   const { ws, me, stream, peers } = useContext(RoomSocketContext);
-  // console.log(stream?.id);
+
+  const [addedPeer, setAddedPeer] = useState();
+  // console.log(me._id);
 
   /** useEffect to emit a message to join a room on every change in id or me(peerId) */
   /** emit will also pass the roomId having the value of id from params */
@@ -46,7 +48,18 @@ function RoomPage() {
       peerId: me?._id,
       roomName: data?.roomData?.data?.foundRoom?.roomName,
     });
+    const addNewPeer = async () => {
+      try {
+        const foundUser = await axios.get(`/api/auth/user/${me?._id}`);
+        // console.log(foundUser.data.foundUser.firstName);
+        setAddedPeer(foundUser.data.foundUser.firstName);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    addNewPeer();
   }, [id, me, ws]);
+  console.log(addedPeer);
 
   return (
     <Wrapper>
@@ -56,7 +69,8 @@ function RoomPage() {
       </div>
       <div className='content'>
         <div className='content-header'>
-          <p>{`Host stream: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
+          <p>{`Host stream: ${addedPeer}`}</p>
+          {/* <p>{`Host stream: ${data?.loggedUserData?.data?.loggedUser?.username}`}</p> */}
           <p>{`Stream Id: ${stream?.id}`}</p>
           <VideoPlayer stream={stream} />
         </div>
@@ -65,7 +79,8 @@ function RoomPage() {
           return (
             <div key={idx}>
               <div className='content-contents'>
-                <p>{`Peer Stream : ${data?.loggedUserData?.data?.loggedUser?.username}`}</p>
+                {/* <p>{`Peer Stream : ${data?.loggedUserData?.data?.loggedUser?.username}`}</p> */}
+                <p>{`Peer Stream : ${addedPeer}`}</p>
                 <p>{`Peer Stream Id: ${newPeers?.stream?.id}`}</p>
               </div>
               <VideoPlayer stream={newPeers?.stream} />
