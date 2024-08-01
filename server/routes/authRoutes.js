@@ -16,6 +16,7 @@ import {
   login,
   currentLoggedUser,
   logout,
+  user,
 } from "../controllers/authControllers.js";
 
 /** authentication */
@@ -44,5 +45,6 @@ router.post(
 );
 router.get("/loggedUser", isLoggedIn, currentLoggedUser);
 router.get("/logout", logout);
+router.get("/user/:id", user);
 
 export default router;

@@ -60,3 +60,13 @@ export const currentLoggedUser = async (req, res) => {
   }
   res.status(200).json({ message: `${loggedUser.username} found`, loggedUser });
 };
+
+/** obtain a single user */
+export const user = async (req, res) => {
+  const { id } = req.params;
+  const foundUser = await UserModel.findById(id);
+  if (!foundUser) {
+    throw new ExpressError("user not found", 400);
+  }
+  res.status(200).json({ message: "user found", foundUser });
+};

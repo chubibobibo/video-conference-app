@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Peer } from "peerjs";
 import { useState } from "react";
 
+import axios from "axios";
+
 /** Web socket server will be used to connect client to server upon mounting */
 const WS = "http://localhost:3001";
 
@@ -58,9 +60,21 @@ export const RoomProvider = ({ children }) => {
   /** @ws listens to an emitted message ("room created " from server.js upon creation of a room (create-room) event ) */
   /** then executes the function createRoom that logs the roomId */
   useEffect(() => {
+    /** @getUser obtains current logged user this will be used to obtain the user logged in*/
+    // const getUser = async () => {
+    //   const currentLoggedUser = await axios.get("/api/auth/loggedUser");
+    //   console.log(currentLoggedUser);
+    //   const newUser = currentLoggedUser?.data?.loggedUser?._id;
+    //   console.log(newUser);
+
     const meId = uuidv4();
-    const peerId = new Peer(meId); /** creates a new peer */
-    setMe(peerId);
+    console.log(meId);
+    /** @meId current logged user used as the peerId */
+    // const meId = newUser;
+    console.log(meId);
+    const peer = new Peer(meId); /** creates a new peer */
+    console.log(peer);
+    setMe(peer);
     /** implement getUserMedia to obtain video */
     /** @stream response from promise that we use to set the stream state */
     /** NOTE: page should be served securely over https for GUM to work */
@@ -84,15 +98,18 @@ export const RoomProvider = ({ children }) => {
     ws.on("peer-joined-room", peerJoinRoom);
     /** @removePeer function that uses dispatch to remove a user using it's peerID */
     ws.on("user-disconnected", removePeer);
+    // };
+    // getUser();
   }, []);
+  console.log(me);
 
   /** useEffect that will handle creating and answering of calls */
   /** @me state that contains peerId */
   /** @stream state that contains stream video */
+  // console.log(stream);
   useEffect(() => {
     if (!me) return;
     if (!stream) return;
-    // console.log(stream);
 
     /** listens for user-joined emits*/
     /** Call is initiated by the current user @me to a new user @peerID */
@@ -100,7 +117,7 @@ export const RoomProvider = ({ children }) => {
     ws.on("user-joined", ({ peerId }) => {
       const call = me.call(peerId, stream);
       call.on("stream", (stream) => {
-        console.log(stream);
+        // console.log(stream);
         /**@dispatch accepts the action that will be used for the reducer function */
         /** contains the action type and the action payload */
         dispatch(addPeerAction(peerId, stream));
