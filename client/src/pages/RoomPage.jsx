@@ -1,9 +1,19 @@
 /** obtain the params in the URL */
-import { useParams, useLoaderData, redirect } from "react-router-dom";
+import {
+  useParams,
+  useLoaderData,
+  redirect,
+  useNavigate,
+} from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import { RoomSocketContext } from "../context/RoomSocketContext";
 import VideoPlayer from "../components/VideoPlayer";
 import { toast } from "react-toastify";
+
+/**react icons */
+import { FcEndCall } from "react-icons/fc";
+import { ImVolumeMute2 } from "react-icons/im";
+import { IoVideocamOff } from "react-icons/io5";
 
 import axios from "axios";
 
@@ -29,6 +39,8 @@ function RoomPage() {
   /** obtain the id from params */
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   /** @data will be passed in the emit for accessing the room data in roomHandler */
   const data = useLoaderData();
   // console.log(data);
@@ -49,19 +61,23 @@ function RoomPage() {
         peerId: me._id,
         roomName: data?.roomData?.data?.foundRoom?.roomName,
       });
-      // const addNewPeer = async () => {
-      //   try {
-      //     const foundUser = await axios.get(`/api/auth/user/${me?._id}`);
-      //     console.log(foundUser);
-      //     setAddedPeer(foundUser?.data?.foundUser?.firstName);
-      //   } catch (err) {
-      //     console.log(err);
-      //   }
-      // };
-      // addNewPeer();
     }
   }, [id, me, ws]);
   // console.log(addedPeer);
+
+  /** function to stop media stream */
+  const stopMediaStreams = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+  };
+
+  const handleClick = () => {
+    stopMediaStreams();
+    ws.emit("endCall");
+    ws.disconnect();
+    navigate("/dashboard/upcomingMeetings");
+  };
 
   return (
     <Wrapper>
@@ -77,7 +93,7 @@ function RoomPage() {
           <VideoPlayer stream={stream} />
         </div>
         {Object.values(peers).map((newPeers, idx) => {
-          console.log(newPeers);
+          // console.log(newPeers);
           return (
             <div key={idx}>
               <div className='content-contents'>
@@ -89,6 +105,20 @@ function RoomPage() {
             </div>
           );
         })}
+      </div>
+      <div className='btn-container'>
+        <button className='call-btn' onClick={handleClick}>
+          <FcEndCall size={"2rem"} />
+          End call
+        </button>
+        <button className='call-btn'>
+          <IoVideocamOff size={"2rem"} />
+          Stop video
+        </button>
+        <button className='call-btn'>
+          <ImVolumeMute2 size={"2rem"} />
+          Mute mic
+        </button>
       </div>
     </Wrapper>
   );
