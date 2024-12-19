@@ -16,7 +16,7 @@ export const action = async ({ request }) => {
   try {
     await axios.post("/api/auth/login/", data);
     toast.success("User logged in");
-    return redirect("/");
+    return redirect("/dashboard/upcomingMeetings");
   } catch (err) {
     console.log(err);
     toast.error(err?.response?.data);
@@ -27,21 +27,31 @@ export const action = async ({ request }) => {
 function Login() {
   return (
     <Wrapper>
-      <h1>Login</h1>
       <div className='login-container'>
-        <Form method='post'>
-          <TextInput type={"text"} name={"username"} placeholder={"Username"} />
+        <h1>Login</h1>
+        <Form method='post' className='form-container'>
+          <TextInput
+            type={"text"}
+            name={"username"}
+            placeholder={"Username"}
+            required={"required"}
+          />
           <TextInput
             type={"password"}
             name={"password"}
             placeholder={"Password"}
+            required={"required"}
           />
-          <SubmitButton type={"submit"} label={"Submit"} />
+          <SubmitButton
+            type={"submit"}
+            label={"Submit"}
+            required={"required"}
+          />
+          <p>
+            No account yet? <Link to='/register'>Register</Link>
+          </p>
         </Form>
       </div>
-      <p>
-        No account yet? <Link to='/register'>Register</Link>
-      </p>
     </Wrapper>
   );
 }

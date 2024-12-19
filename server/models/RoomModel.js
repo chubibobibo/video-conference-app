@@ -1,0 +1,30 @@
+import mongoose from "mongoose";
+
+const { Schema } = mongoose;
+
+const RoomSchema = new Schema(
+  {
+    roomId: {
+      type: String,
+    },
+    roomName: {
+      type: String,
+    },
+    // host: {
+    //   type: String,
+    //   required: true,
+    // },
+    // meetType: {
+    //   type: String,
+    // },
+    // meetDate: {
+    //   type: String,
+    // },
+    participants: {
+      type: Array,
+    },
+  },
+  { timestamps: true }
+);
+
+export const RoomModel = mongoose.model("RoomModel", RoomSchema);
